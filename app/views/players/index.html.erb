@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Players</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Department</th>
+      <th>Rating</th>
+      <th>Wins</th>
+      <th>Losses</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @players.each do |player| %>
+      <tr>
+        <td><%= player.name %></td>
+        <td><%= player.department %></td>
+        <td><%= player.rating %></td>
+        <td><%= player.wins %></td>
+        <td><%= player.losses %></td>
+        <td><%= link_to 'Show', player %></td>
+        <td><%= link_to 'Edit', edit_player_path(player) %></td>
+        <td><%= link_to 'Destroy', player, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Player', new_player_path %>
