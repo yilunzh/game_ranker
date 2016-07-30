@@ -4,9 +4,11 @@ class Player < ActiveRecord::Base
 
 	def self.allNames()
 			list = []
+			
 			for player in self.all 
 				list.append(player.name)
 			end
+
 			return list
 	end
 end

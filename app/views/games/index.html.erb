@@ -5,8 +5,8 @@
 <table>
   <thead>
     <tr>
-      <th>Player 1 ID</th>
-      <th>Player 2 ID</th>
+      <th>Player 1 Name</th>
+      <th>Player 2 Name</th>
       <th>Player 1 score</th>
       <th>Player 2 score</th>
       <th>Date</th>
@@ -17,8 +17,8 @@
   <tbody>
     <% @games.each do |game| %>
       <tr>
-        <td><%= game.player1_id %></td>
-        <td><%= game.player2_id %></td>
+        <td><%= Player.find(game.player1_id).name %></td>
+        <td><%= Player.find(game.player2_id).name %></td>
         <td><%= game.player1_score %></td>
         <td><%= game.player2_score %></td>
         <td><%= game.created_at %></td>

@@ -27,24 +27,8 @@ class GamesController < ApplicationController
     @game.player1_id = p1.id
     @game.player2_id = p2.id
     
-    if @game.player1_score > @game.player2_score
-      p1.wins += 1
-      p2.losses += 1
-      p1_expected_score = 1.0 / (1 + 10 ** ((p2.rating - p1.rating) / 400))
-      p2_expected_score = 1.0 / (1 + 10 ** ((p1.rating - p2.rating) / 400))
-      p1.rating = p1.rating + 32 * (1 - p1_expected_score)
-      p2.rating = p2.rating + 32 * (0 - p2_expected_score)
-      @game.rating_change = (32 * (1 - p1_expected_score)).abs
-    else
-      p2.wins += 1
-      p1.losses += 1
-      p1_expected_score = 1.0 / (1 + 10 ** ((p2.rating - p1.rating) / 400))
-      p2_expected_score = 1.0 / (1 + 10 ** ((p1.rating - p2.rating) / 400))
-      p1.rating = p1.rating + 32 * (0 - p1_expected_score)
-      p2.rating = p2.rating + 32 * (1 - p2_expected_score)
-      @game.rating_change = (32 * (1 - p2_expected_score)).abs
-    end
-
+    p1, p2 = @game.update_wins(p1, p2)
+    p1, p2, @game.rating_change = @game.update_rating(p1, p2)
     
     respond_to do |format|
       if @game.save
@@ -60,63 +44,15 @@ class GamesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /games/1
-  # PATCH/PUT /games/1.json
-  def update
-    respond_to do |format|
-      g = Game.find(params[:id])
-      p1 = Player.find_by_name(params[:game][:player1_name])
-      p2 = Player.find_by_name(params[:game][:player2_name])
-      @game.player1_id = p1.id
-      @game.player2_id = p2.id
-        
-      if g.player1_score > @game.player2_score
-        p1.wins -= 1
-        p2.losses -= 1
-      else
-        p2.wins -= 1
-        p1.losses -= 1
-      end      
-
-      if @game.update(game_params)
-        if @game.player1_score > @game.player2_score
-          p1.wins += 1
-          p2.losses += 1
-        else
-          p2.wins += 1
-          p1.losses += 1
-        end
-
-        p1.save
-        p2.save 
-
-        format.html { redirect_to @game, notice: 'Game was successfully updated.' }
-        format.json { render :show, status: :ok, location: @game }
-      else
-        format.html { render :edit }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /games/1
   # DELETE /games/1.json
   def destroy
-    g = Game.find(params[:id])
+    @game = Game.find(params[:id])
     p1 = Player.find(@game.player1_id)
     p2 = Player.find(@game.player2_id)
-        
-    if g.player1_score > @game.player2_score
-      p1.wins -= 1
-      p2.losses -= 1
-      p1.rating -= g.rating_change
-      p2.rating += g.rating_change
-    else
-      p2.wins -= 1
-      p1.losses -= 1
-      p2.rating -= g.rating_change
-      p1.rating += g.rating_change
-    end
+    
+    p1, p2 = @game.revert_wins(p1, p2)
+    p1, p2 = @game.revert_ratings(p1, p2)
 
     p1.save
     p2.save
