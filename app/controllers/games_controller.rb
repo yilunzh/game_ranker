@@ -18,10 +18,6 @@ class GamesController < ApplicationController
     gon.player_names = Player.allNames
   end
 
-  # GET /games/1/edit
-  def edit
-  end
-
   # POST /games
   # POST /games.json
   def create
@@ -30,25 +26,28 @@ class GamesController < ApplicationController
     p2 = Player.find_by_name(params[:game][:player2_name])
     @game.player1_id = p1.id
     @game.player2_id = p2.id
+    
+    if @game.player1_score > @game.player2_score
+      p1.wins += 1
+      p2.losses += 1
+      p1_expected_score = 1.0 / (1 + 10 ** ((p2.rating - p1.rating) / 400))
+      p2_expected_score = 1.0 / (1 + 10 ** ((p1.rating - p2.rating) / 400))
+      p1.rating = p1.rating + 32 * (1 - p1_expected_score)
+      p2.rating = p2.rating + 32 * (0 - p2_expected_score)
+      @game.rating_change = (32 * (1 - p1_expected_score)).abs
+    else
+      p2.wins += 1
+      p1.losses += 1
+      p1_expected_score = 1.0 / (1 + 10 ** ((p2.rating - p1.rating) / 400))
+      p2_expected_score = 1.0 / (1 + 10 ** ((p1.rating - p2.rating) / 400))
+      p1.rating = p1.rating + 32 * (0 - p1_expected_score)
+      p2.rating = p2.rating + 32 * (1 - p2_expected_score)
+      @game.rating_change = (32 * (1 - p2_expected_score)).abs
+    end
 
+    
     respond_to do |format|
       if @game.save
-        if @game.player1_score > @game.player2_score
-          p1.wins += 1
-          p2.losses += 1
-          p1_expected_score = 1.0 / (1 + 10 ** ((p2.rating - p1.rating) / 400))
-          p2_expected_score = 1.0 / (1 + 10 ** ((p1.rating - p2.rating) / 400))
-          p1.rating = p1.rating + 32 * (1 - p1_expected_score)
-          p2.rating = p2.rating + 32 * (0 - p2_expected_score)
-        else
-          p2.wins += 1
-          p1.losses += 1
-          p1_expected_score = 1.0 / (1 + 10 ** ((p2.rating - p1.rating) / 400))
-          p2_expected_score = 1.0 / (1 + 10 ** ((p1.rating - p2.rating) / 400))
-          p1.rating = p1.rating + 32 * (0 - p1_expected_score)
-          p2.rating = p2.rating + 32 * (1 - p2_expected_score)
-        end
-        
         p1.save
         p2.save 
 
@@ -110,9 +109,13 @@ class GamesController < ApplicationController
     if g.player1_score > @game.player2_score
       p1.wins -= 1
       p2.losses -= 1
+      p1.rating -= g.rating_change
+      p2.rating += g.rating_change
     else
       p2.wins -= 1
       p1.losses -= 1
+      p2.rating -= g.rating_change
+      p1.rating += g.rating_change
     end
 
     p1.save
