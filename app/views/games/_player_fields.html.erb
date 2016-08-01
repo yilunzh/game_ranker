@@ -1,0 +1,8 @@
+<p>
+	<%= f.label :name, "Player" %><br />
+	<%= f.text_field :name, class: "name" %><br />
+
+	<%= f.fields_for :score do |builder| %>
+		<%= render 'score_fields', :f => builder %>
+	<% end %>
+</p>

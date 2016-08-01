@@ -1,23 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Player1 ID:</strong>
-  <%= @game.player1_id %>
-</p>
-
-<p>
-  <strong>Player2 ID:</strong>
-  <%= @game.player2_id %>
-</p>
-
-<p>
-  <strong>Player1 score:</strong>
-  <%= @game.player1_score %>
-</p>
-
-<p>
-  <strong>Player2 score:</strong>
-  <%= @game.player2_score %>
+  <strong>Date:</strong>
+  <%= @game.game_date %>
 </p>
 
 <p>
@@ -25,9 +10,5 @@
   <%= @game.rating_change %>
 </p>
 
-<p>
-  <strong>Date:</strong>
-  <%= @game.created_at %>
-</p>
 
 <%= link_to 'Back', games_path %>

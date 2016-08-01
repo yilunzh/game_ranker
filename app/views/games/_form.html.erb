@@ -12,23 +12,14 @@
   <% end %>
   
   <div class="field">
-    <%= f.label :player1_name %><br>
-    <%= f.text_field :player1_name, class: "name" %>
+    <%= f.label :game_date %><br>
+    <%= f.date_field :game_date %>
   </div>
 
-  <div class="field">
-    <%= f.label :player1_score %><br>
-    <%= f.number_field :player1_score %>
-  </div>
-
-  <div class="field">
-    <%= f.label :player2_name %><br>
-    <%= f.text_field :player2_name, class: "name" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :player2_score %><br>
-    <%= f.number_field :player2_score %>
+  <div id="players">
+    <%= f.fields_for :players do |builder| %>
+      <%= render "player_fields", :f => builder %>
+    <% end %>
   </div>
 
   <div class="actions">

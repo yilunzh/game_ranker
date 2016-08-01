@@ -11,24 +11,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160730050346) do
+ActiveRecord::Schema.define(version: 20160730200212) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "game_players", force: :cascade do |t|
+    t.integer  "player_id"
+    t.integer  "game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "game_players", ["game_id"], name: "index_game_players_on_game_id", using: :btree
+  add_index "game_players", ["player_id"], name: "index_game_players_on_player_id", using: :btree
 
   create_table "games", force: :cascade do |t|
-    t.integer  "player1_id"
-    t.integer  "player2_id"
-    t.integer  "player1_score"
-    t.integer  "player2_score"
+    t.date     "game_date"
+    t.integer  "rating_change"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.float    "rating_change"
   end
 
   create_table "players", force: :cascade do |t|
     t.string   "name"
     t.string   "department"
+    t.string   "email"
     t.integer  "wins"
     t.integer  "losses"
     t.float    "rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "scores", force: :cascade do |t|
+    t.integer  "game_id"
+    t.integer  "player_id"
+    t.integer  "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

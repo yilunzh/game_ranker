@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: [:show, :edit, :update, :destroy]
+  before_action :set_game, only: [:show, :destroy]
 
   # GET /games
   # GET /games.json
@@ -15,25 +15,40 @@ class GamesController < ApplicationController
   # GET /games/new
   def new
     @game = Game.new
+    4.times do
+      player = @game.players.build
+      4.times { player.scores.build }
+    end
     gon.player_names = Player.allNames
   end
 
   # POST /games
   # POST /games.json
   def create
-    @game = Game.new(game_params)
-    p1 = Player.find_by_name(params[:game][:player1_name])
-    p2 = Player.find_by_name(params[:game][:player2_name])
-    @game.player1_id = p1.id
-    @game.player2_id = p2.id
+    @game = Game.new
+    @game.game_date = params["game"]["game_date"]
+    @players = params["game"]["players_attributes"]
+    names = []
+    @players.each do |key, value|
+      if value["name"] != ''
+        p = Player.find_by_name(value["name"])
+        @game.players << p
+        score_params = Score.new({id: nil, game_id: @game.id, player_id: p.id, score: value["score"]["score"].to_i})
+        @game.scores << score_params
+      end
+    end
+    # p1 = Player.find_by_name(params[:game][:player1_name])
+    # p2 = Player.find_by_name(params[:game][:player2_name])
+    # @game.player1_id = p1.id
+    # @game.player2_id = p2.id
     
-    p1, p2 = @game.update_wins(p1, p2)
-    p1, p2, @game.rating_change = @game.update_rating(p1, p2)
+    # p1, p2 = @game.update_wins(p1, p2)
+    # p1, p2, @game.rating_change = @game.update_rating(p1, p2)
     
     respond_to do |format|
       if @game.save
-        p1.save
-        p2.save 
+        # p1.save
+        # p2.save 
 
         format.html { redirect_to @game, notice: 'Game was successfully created.' }
         format.json { render :show, status: :created, location: @game }
@@ -73,6 +88,7 @@ class GamesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def game_params
-      params.require(:game).permit(:player1_id, :player2_id, :player1_score, :player2_score)
+      params.require(:game).permit(:game_date, 
+                                    players_attributes: [:id, :name, :score])
     end
 end

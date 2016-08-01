@@ -5,11 +5,11 @@
 <table>
   <thead>
     <tr>
-      <th>Player 1 Name</th>
-      <th>Player 2 Name</th>
-      <th>Player 1 score</th>
-      <th>Player 2 score</th>
-      <th>Date</th>
+      <th>Team 1 Players</th>
+      <th>Team 2 Players</th>
+      <th>Team 1 score</th>
+      <th>Team 2 score</th>
+      <th>Game Date</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,11 +17,11 @@
   <tbody>
     <% @games.each do |game| %>
       <tr>
-        <td><%= Player.find(game.player1_id).name %></td>
-        <td><%= Player.find(game.player2_id).name %></td>
-        <td><%= game.player1_score %></td>
-        <td><%= game.player2_score %></td>
-        <td><%= game.created_at %></td>
+        <td><%= game.players.first.name %></td>
+        <td><%= game.players.last.name %></td>
+        <td><%= game.scores.first.score %></td>
+        <td><%= game.scores.last.score %></td>
+        <td><%= game.game_date %></td>
         <td><%= link_to 'Show', game %></td>
         <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
