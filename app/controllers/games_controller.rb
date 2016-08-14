@@ -28,27 +28,74 @@ class GamesController < ApplicationController
     @game = Game.new
     @game.game_date = params["game"]["game_date"]
     @players = params["game"]["players_attributes"]
-    names = []
+    team1 = { members: [], rating: 0, score: nil }
+    team2 = { members: [], rating: 0, score: nil }
+    winning_score = 0
+
+    @players.each do |key, value|
+      score = value["score"]["score"].to_i
+      name = value["name"]
+
+      #assign winning teams and scores
+      if not name.blank? 
+        if team1[:members].empty? and team2[:members].empty?
+          team1[:members] << name
+          team1[:score] = score
+        else
+          if team1[:score] == score
+            team1[:members] << name
+          else
+            team2[:members] << name
+            team2[:score] = score
+          end
+        end
+
+        if winning_score < score
+          winning_score = score
+        end
+      end
+    end
+
+    #assign rating and find the rating change
+    team1[:members].each do |member|
+      team1[:rating] += Player.find_by_name(member).rating
+    end
+
+    team2[:members].each do |member|
+      team2[:rating] += Player.find_by_name(member).rating
+    end
+
+    rating_change = @game.rating_update(team1[:rating], team2[:rating])
+    @game.rating_change = rating_change
+
+    #calculate wins, losses, and ratings
     @players.each do |key, value|
       if value["name"] != ''
         p = Player.find_by_name(value["name"])
         @game.players << p
-        score_params = Score.new({id: nil, game_id: @game.id, player_id: p.id, score: value["score"]["score"].to_i})
+        score = value["score"]["score"].to_i
+        score_params = Score.new({id: nil, game_id: @game.id, player_id: p.id, score: score})
         @game.scores << score_params
+        
+        if score == winning_score
+          p.wins += 1
+          p.rating += rating_change
+        else
+          p.losses += 1
+          p.rating -= rating_change
+        end
       end
     end
-    # p1 = Player.find_by_name(params[:game][:player1_name])
-    # p2 = Player.find_by_name(params[:game][:player2_name])
-    # @game.player1_id = p1.id
-    # @game.player2_id = p2.id
-    
-    # p1, p2 = @game.update_wins(p1, p2)
-    # p1, p2, @game.rating_change = @game.update_rating(p1, p2)
-    
+
+    #save data
     respond_to do |format|
       if @game.save
-        # p1.save
-        # p2.save 
+        @game.players.each do |p|
+          p.save
+        end
+        @game.scores.each do |s|
+          s.save
+        end
 
         format.html { redirect_to @game, notice: 'Game was successfully created.' }
         format.json { render :show, status: :created, location: @game }
@@ -63,14 +110,28 @@ class GamesController < ApplicationController
   # DELETE /games/1.json
   def destroy
     @game = Game.find(params[:id])
-    p1 = Player.find(@game.player1_id)
-    p2 = Player.find(@game.player2_id)
     
-    p1, p2 = @game.revert_wins(p1, p2)
-    p1, p2 = @game.revert_ratings(p1, p2)
+    #find winning score
+    winning_score = 0
+    @game.scores.each do |score|
+      if score.score > winning_score
+        winning_score = score.score
+      end
+    end
 
-    p1.save
-    p2.save
+    #reverting score and ratings
+    @game.scores.each do |score|
+      p = Player.find(score.player_id)
+
+      if score.score == winning_score
+        p.wins -= 1
+        p.rating -= @game.rating_change
+      else
+        p.losses -= 1
+        p.rating += @game.rating_change
+      end
+      p.save
+    end
 
     @game.destroy
 
@@ -90,5 +151,9 @@ class GamesController < ApplicationController
     def game_params
       params.require(:game).permit(:game_date, 
                                     players_attributes: [:id, :name, :score])
+    end
+
+    def destroy_scores
+      self.scores.delete_all
     end
 end

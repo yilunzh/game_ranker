@@ -5,10 +5,10 @@
 <table>
   <thead>
     <tr>
-      <th>Team 1 Players</th>
-      <th>Team 2 Players</th>
-      <th>Team 1 score</th>
-      <th>Team 2 score</th>
+      <th>Winning Team</th>
+      <th>Losign Team</th>
+      <th>Winning Team Score</th>
+      <th>Losing Team Score</th>
       <th>Game Date</th>
       <th colspan="3"></th>
     </tr>
@@ -17,10 +17,10 @@
   <tbody>
     <% @games.each do |game| %>
       <tr>
-        <td><%= game.players.first.name %></td>
-        <td><%= game.players.last.name %></td>
-        <td><%= game.scores.first.score %></td>
-        <td><%= game.scores.last.score %></td>
+        <td><%= game.winners_losers[:winners] %></td>
+        <td><%= game.winners_losers[:losers] %></td>
+        <td><%= game.winners_losers[:winning_score] %></td>
+        <td><%= game.winners_losers[:losing_score] %></td>
         <td><%= game.game_date %></td>
         <td><%= link_to 'Show', game %></td>
         <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
