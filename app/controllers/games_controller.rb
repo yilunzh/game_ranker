@@ -14,12 +14,12 @@ class GamesController < ApplicationController
 
   # GET /games/new
   def new
+    gon.player_names = Player.allNames
     @game = Game.new
     4.times do
       player = @game.players.build
       4.times { player.scores.build }
-    end
-    gon.player_names = Player.allNames
+    end 
   end
 
   # POST /games
