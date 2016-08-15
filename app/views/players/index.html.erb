@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Players Ranking</h1>
+<h1>Player Ranking</h1>
 
 <table class="table">
   <thead>
@@ -8,7 +8,6 @@
       <th>Rank</th>
       <th>Name</th>
       <th>Department</th>
-      <th>Email</th>
       <th>Rating</th>
       <th>Wins</th>
       <th>Losses</th>
@@ -22,7 +21,6 @@
         <td><%= @players.index(player) + 1 %></td>
         <td><%= player.name %></td>
         <td><%= player.department %></td>
-        <td><%= player.email %></td>
         <td><%= player.rating.round %></td>
         <td><%= player.wins %></td>
         <td><%= player.losses %></td>
