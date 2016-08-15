@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'games#index'
+  root 'players#index'
 
   resources :games, except: [:edit, :update]
   resources :players

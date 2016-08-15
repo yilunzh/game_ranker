@@ -17,8 +17,8 @@
   <tbody>
     <% @games.each do |game| %>
       <tr>
-        <td><%= game.winners_losers[:winners] %></td>
-        <td><%= game.winners_losers[:losers] %></td>
+        <td><%= game.winners_losers[:winners].join(", ") %></td>
+        <td><%= game.winners_losers[:losers].join(", ") %></td>
         <td><%= game.winners_losers[:winning_score] %></td>
         <td><%= game.winners_losers[:losing_score] %></td>
         <td><%= game.game_date %></td>
