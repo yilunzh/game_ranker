@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'players#index'
+  get 'faq', to: 'static_pages#faq', as: :faq
 
   resources :games, except: [:edit, :update]
   resources :players
