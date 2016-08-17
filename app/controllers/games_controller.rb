@@ -4,7 +4,7 @@ class GamesController < ApplicationController
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all.order(game_date: :desc)
+    @games = Game.all.order(game_date: :desc, created_at: :desc)
   end
 
   # GET /games/1
@@ -15,7 +15,7 @@ class GamesController < ApplicationController
   # GET /games/new
   def new
     gon.player_names = Player.allNames
-    @game = Game.new
+    @game = Game.new(game_date: DateTime.now.to_date)
     4.times do
       player = @game.players.build
       4.times { player.scores.build }
@@ -100,7 +100,11 @@ class GamesController < ApplicationController
         format.html { redirect_to @game, notice: 'Game was successfully created.' }
         format.json { render :show, status: :created, location: @game }
       else
-        format.html { render :new }
+        format.html { 4.times do
+                        player = @game.players.build
+                        4.times { player.scores.build }
+                      end 
+                      render :new }
         format.json { render json: @game.errors, status: :unprocessable_entity }
       end
     end

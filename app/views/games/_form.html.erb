@@ -1,28 +1,22 @@
 <%= form_for(@game) do |f| %>
   <% if @game.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@game.errors.count, "error") %> prohibited this game from being saved:</h2>
-
-      <ul>
       <% @game.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <p class="alert alert-danger"><%= message %></p>
       <% end %>
-      </ul>
-    </div>
   <% end %>
   
-  <div class="field">
-    <%= f.label :game_date %><br>
-    <%= f.date_field :game_date %>
+  <div class="field form-group">
+    <%= f.label :game_date %>
+    <%= f.date_field :game_date, class: "form-control" %><br />
   </div>
 
-  <div id="players">
+  <div class="field form-group" id="players">
     <%= f.fields_for :players do |builder| %>
       <%= render "player_fields", :f => builder %>
     <% end %>
   </div>
 
-  <div class="actions">
+  <div class="actions form-group">
     <%= f.submit class: "btn btn-primary" %>
   </div>
 <% end %>
