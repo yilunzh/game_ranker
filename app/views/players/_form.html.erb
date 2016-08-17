@@ -1,5 +1,6 @@
 <%= form_for(@player) do |f| %>
   <% if @player.errors.any? %>
+    <div>
       <% @player.errors.full_messages.each do |message| %>
         <p class="alert alert-danger"><%= message %></p>
       <% end %>

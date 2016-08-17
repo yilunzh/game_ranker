@@ -97,7 +97,7 @@ class GamesController < ApplicationController
           s.save
         end
 
-        format.html { redirect_to @game, notice: 'Game was successfully created.' }
+        format.html { redirect_to games_path, notice: 'Game was successfully created.' }
         format.json { render :show, status: :created, location: @game }
       else
         format.html { 4.times do

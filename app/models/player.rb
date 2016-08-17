@@ -2,6 +2,8 @@ class Player < ActiveRecord::Base
 	has_many :game_players
 	has_many :games, through: :game_players
 	has_many :scores
+
+	validates :email, presence: true, uniqueness: { case_sensitive: false }
 	accepts_nested_attributes_for :scores
 	
 
