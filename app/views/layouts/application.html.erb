@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>GameRanker</title>
+  <title>Carvana Ping Pong</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -11,11 +11,12 @@
   <div id="wrapper">
   	<div id="sidebar-wrapper">
   		<ul class="sidebar-nav">
-  			<li class="sidebar-brand"><%= link_to "Carvana Ping Pong", root_path %></li>
+        <%= image_tag("CarvanaPingPong.png") %>
   			<li><%= link_to "Players", players_path %></li>
   			<li><%= link_to "Games", games_path %></li>
         <li><%= link_to "FAQ", faq_path %>
   		</ul>
+
     </div>
 
     <div id="page-content-wrapper">
