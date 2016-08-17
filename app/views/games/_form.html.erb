@@ -10,11 +10,10 @@
     <%= f.date_field :game_date, class: "form-control" %><br />
   </div>
 
-  <div class="field form-group" id="players">
+  <p><strong>Match Score</strong></p>
     <%= f.fields_for :players do |builder| %>
       <%= render "player_fields", :f => builder %>
     <% end %>
-  </div>
 
   <div class="actions form-group">
     <%= f.submit class: "btn btn-primary" %>

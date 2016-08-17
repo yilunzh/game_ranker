@@ -1,8 +1,9 @@
-<p>
-	<%= f.label :name, "Player Name" %><br />
-	<%= f.text_field :name, class: "name form-control" %>
+ <div class="form-inline">
+  <div class="field form-group">
+	<%= f.text_field :name, class: "name form-control", placeholder: "Player Name" %>
 
 	<%= f.fields_for :score do |builder| %>
 		<%= render 'score_fields', :f => builder %>
 	<% end %>
-</p>
+	</div>
+</div>

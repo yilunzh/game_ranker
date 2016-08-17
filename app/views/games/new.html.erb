@@ -1,9 +1,20 @@
 
+<div class="col-md-5">
 	<h1>New Game</h1>
 
-  <div class="col-md-3">
-		<%= render 'form' %>
+  
+	<%= render 'form' %>
 	
-		<%= link_to 'Back', games_path %>
+	<%= link_to 'Back', games_path %>
 
-	</div>
+</div>
+
+<div class="col-md-5 col-md-offset-1">
+	<h3>Instructions</h3>
+	<p>Under Match Score, input the following for each player:
+	<ol>
+		<li><strong>Player Name:</strong> input each player's name into text box. If no match found in auto-complete, you must first create the player under Players section. Otherwise, form submission will fail.</li>
+		<li><strong>Games Won:</strong> For each player in the match, input the number of games the player won in the series. If Bob and Rachel played 3 games, where Bob won 2 and Rachel won 1. Then type 2 for Bob and 1 for Rachel.</li>
+	</ol>
+	<p>Afterwards, click on Create Game to save results</p>
+</div>
