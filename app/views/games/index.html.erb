@@ -6,6 +6,7 @@
   </span>
 </h1>
 
+
 <table class="table">
   <thead>
     <tr>
@@ -26,8 +27,10 @@
         <td><%= game.winners_losers[:winning_score] %></td>
         <td><%= game.winners_losers[:losing_score] %></td>
         <td><%= game.game_date %></td>
-        <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure? This will remove the game from existence.' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @games %>
