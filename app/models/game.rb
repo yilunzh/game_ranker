@@ -19,7 +19,7 @@ class Game < ActiveRecord::Base
 
   def rating_update(winner_rating, loser_rating, win_percentage)
     expected_score = 1.0 / (1 + 10 ** ((loser_rating - winner_rating) / 400))
-    rating_change = (32 * (1 - expected_score)).abs + (16 * (win_percentage))
+    rating_change = (32 * (1 - expected_score)).abs * (1.0 + (win_percentage) / 2.0)
     binding.pry
     return rating_change
   end

@@ -18,9 +18,20 @@
 	</ul>
 
 <p><b>Q: How is my rating calculated?</b></p>
-<p><b>A:</b> The math behind the ranking is based on the ELO system used in competitive chess. The concept of the algorithm is quite simple: a player is first given a default rating. His/her rating is re-evaluated after every match based on the rating of the opponent and the result of the match. For example, if you lost against an opponent who has a much higher rating than you, your rating won't go down much. However, if you had won against that same player, your rating would be boosted significantly.</p> 
+<p><b>A:</b> The math behind the ranking is based on the ELO system used in competitive chess. The concept of the algorithm is quite simple: a player is first given a default rating. His/her rating is re-evaluated after every match based on the rating of the opponent and the result of the match. For example, if you lost against an opponent who has a much higher rating than you, your rating won't go down much. However, if you had won against that same player, your rating would be boosted significantly. Similarly, the margin of victory also is taken into account. If you won the match 3-0, your rating boost higher than if you won 2-1</p> 
 
 <p>This system is widely used to rank the relative skill levels of players in situations where the players may not meet head to head and not everyone plays the same number of games. To learn more about the ELO system, click <a href="http://www.lifewithalacrity.com/2006/01/ranking_systems.html">here</a><p>
+
+<p>If you simply must know the exact calculation that goes into your ranking calculation. Here it is:</p>
+<div class="well">
+  <ol>
+    <li>win_percentage = games_won_by_winner / total_games_played</li>
+    <li>expected_score = 1 / (1 + 10 ^ ((loser_rating - winner_rating) / 400))</li>
+    <li>rating_change = (32 * (1 - expected_score)).abs * (1 + win_percentage / 2)</li>
+    <li>new_rating = previous_rating +/- rating_change (+ if win, - if lose)</li>
+   </ol>
+</div>
+
 
 <p><b>Q: How do you treat rating calculation for doubles?</b></p>
 <p><b>A:</b> The same algorithm is used, except that the rating of the 2 players on each team is combined.</p>
