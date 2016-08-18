@@ -65,11 +65,14 @@ class GamesController < ApplicationController
       team2[:rating] += Player.find_by_name(member).rating
     end
 
+
     #find winning and losing team and calculate rating change accordingly
     if team1[:score] == winning_score
-      rating_change = @game.rating_update(team1[:rating], team2[:rating])
+      win_percentage = team1[:score] / (team1[:score] + team2[:score])
+      rating_change = @game.rating_update(team1[:rating], team2[:rating], win_percentage)
     else
-      rating_change = @game.rating_update(team2[:rating], team1[:rating])
+      win_percentage = team2[:score] / (team1[:score] + team2[:score])
+      rating_change = @game.rating_update(team2[:rating], team1[:rating], win_percentage) 
     end
 
     @game.rating_change = rating_change
