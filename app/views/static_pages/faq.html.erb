@@ -27,7 +27,7 @@
   <ol>
     <li>win_percentage = games_won_by_winner / total_games_played</li>
     <li>expected_score = 1 / (1 + 10 ^ ((loser_rating - winner_rating) / 400))</li>
-    <li>rating_change = (32 * (1 - expected_score)).abs * (1 + win_percentage / 2)</li>
+    <li>rating_change = (32 * (1 - expected_score)).abs * (1.0 + (win_percentage-0.5))</li>
     <li>new_rating = previous_rating +/- rating_change (+ if win, - if lose)</li>
    </ol>
 </div>
