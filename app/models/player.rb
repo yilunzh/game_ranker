@@ -16,4 +16,9 @@ class Player < ActiveRecord::Base
 
 			return list
 	end
+
+	def send_slack_notification()
+      HTTP.post("https://hooks.slack.com/services/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", 
+              :json => { text: ":table_tennis_paddle_and_ball: #{self.name} just signed up for Carvana Ping Pong. :+1:" })
+  end
 end

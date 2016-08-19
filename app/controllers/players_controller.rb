@@ -31,6 +31,7 @@ class PlayersController < ApplicationController
 
     respond_to do |format|
       if @player.save
+        @player.send_slack_notification()
         format.html { redirect_to @player, notice: 'Player was successfully created.' }
         format.json { render :show, status: :created, location: @player }
       else
