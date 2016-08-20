@@ -8,6 +8,8 @@
 
 <h5><strong><%= Player.all.count %></strong> Ping Pong Playas</h5>
 
+<h3>Ranked Players</h3>
+
 <table class="table">
   <thead>
     <tr>
@@ -22,9 +24,9 @@
   </thead>
 
   <tbody>
-    <% @players.each do |player| %>
+    <% @ranked_players.each do |player| %>
       <tr>
-        <td><%= @players.index(player) + 1 %></td>
+        <td><%= @ranked_players.index(player) + 1 %></td>
         <td><%= player.name %></td>
         <td><%= player.department %></td>
         <td><%= player.rating.round %></td>
@@ -38,3 +40,30 @@
 </table>
 
 <br>
+
+<h3>Unranked Players</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Department</th>
+      <th>Wins</th>
+      <th>Losses</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @unranked_players.each do |player| %>
+      <tr>
+        <td><%= player.name %></td>
+        <td><%= player.department %></td>
+        <td><%= player.wins %></td>
+        <td><%= player.losses %></td>
+        <td><%= link_to 'Details', player %></td>
+        <td><%= link_to 'Edit', edit_player_path(player) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

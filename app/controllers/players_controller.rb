@@ -4,7 +4,8 @@ class PlayersController < ApplicationController
   # GET /players
   # GET /players.json
   def index
-    @players = Player.all.order(rating: :desc) 
+    @ranked_players = Player.where("wins>0 or losses>0").order(rating: :desc) 
+    @unranked_players = Player.where("wins=0 and losses=0")
   end
 
   # GET /players/1

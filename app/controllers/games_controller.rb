@@ -67,7 +67,6 @@ class GamesController < ApplicationController
       team2[:rating] += Player.find_by_name(member).rating
     end
 
-
     #find winning and losing team and calculate rating change accordingly
     if team1[:score] == winning_score
       winning_team = team1
