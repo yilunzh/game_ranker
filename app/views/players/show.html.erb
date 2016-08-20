@@ -31,5 +31,31 @@
   <%= @player.losses %>
 </p>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Game Date</th>
+      <th>W/L</th>
+      <th>Rating Change</th>
+      <th>Matchup</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @game_logs.each do |game_log| %>
+      <tr>
+        <td><%= game_log[:id] %></td>
+        <td><%= game_log[:game_date] %></td>
+        <td><%= game_log[:result] %></td>
+        <td><%= game_log[:rating_change] %></td>
+        <td><%= game_log[:matchup] %></td>
+        <td><%= game_log[:score] %></td>
+    <% end %>
+  </tbody>
+</table>
+
 <%= link_to 'Edit', edit_player_path(@player) %> |
 <%= link_to 'Back', players_path %>
+

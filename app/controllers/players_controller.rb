@@ -10,6 +10,19 @@ class PlayersController < ApplicationController
   # GET /players/1
   # GET /players/1.json
   def show
+    @game_logs = []
+    @player = Player.find(params[:id])
+    @games = @player.games
+    @games.each do |game|
+      game_data = game.winners_losers
+      is_win = @player.determine_win(game_data)
+      game_log = {id: game.id, game_date: game.game_date, result: is_win ? "W" : "L", 
+                  rating_change: is_win ? "+#{game.rating_change}": "-#{game.rating_change}", 
+                  matchup: "#{game_data[:winners].join(' / ')} - #{game_data[:losers].join(' / ')}",
+                  score: "#{game_data[:winning_score]} - #{game_data[:losing_score]}" }
+      @game_logs << game_log
+      @game_logs = @game_logs.sort_by {|game_log| game_log[:game_date].to_time.to_i }.reverse!
+    end
   end
 
   # GET /players/new

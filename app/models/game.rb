@@ -55,7 +55,6 @@ class Game < ActiveRecord::Base
 
   def all_player_names
     names = []
-    winner_score = self.winning_score
 
     self.players.each do |player|
       names << player.name
