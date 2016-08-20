@@ -74,8 +74,8 @@ class GamesController < ApplicationController
       win_percentage = team1[:score] / (team1[:score] + team2[:score])
       rating_change = @game.rating_update(team1[:rating], team2[:rating], win_percentage)
     else
-      winning_team = team1
-      losing_team = team2
+      winning_team = team2
+      losing_team = team1
       win_percentage = team2[:score] / (team1[:score] + team2[:score])
       rating_change = @game.rating_update(team2[:rating], team1[:rating], win_percentage) 
     end
