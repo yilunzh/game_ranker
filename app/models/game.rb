@@ -77,4 +77,12 @@ class Game < ActiveRecord::Base
               :json => { text: ":table_tennis_paddle_and_ball: #{winning_team_name} just won against #{losing_team_name} #{winning_team_score} - #{losing_team_score} :raised_hands:" })
     end
   end
+
+  def search(search)
+    if search
+      find(:all, :conditions => ['name LIKE ?', "%#{search}%"])
+    else
+      find(:all)
+    end
+  end
 end

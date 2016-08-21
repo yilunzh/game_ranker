@@ -5,65 +5,82 @@
     <%= button_to 'New Player', new_player_path, method: :get, class: "btn btn-info" %>
   </span>
 </h1> 
-
 <h5><strong><%= Player.all.count %></strong> Ping Pong Playas</h5>
 
-<h3>Ranked Players</h3>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Rank</th>
-      <th>Name</th>
-      <th>Department</th>
-      <th>Rating</th>
-      <th>Wins</th>
-      <th>Losses</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @ranked_players.each do |player| %>
-      <tr>
-        <td><%= @ranked_players.index(player) + 1 %></td>
-        <td><%= player.name %></td>
-        <td><%= player.department %></td>
-        <td><%= player.rating.round %></td>
-        <td><%= player.wins %></td>
-        <td><%= player.losses %></td>
-        <td><%= link_to 'Details', player %></td>
-        <td><%= link_to 'Edit', edit_player_path(player) %></td>
-      </tr>
+<div class="row">
+  <div class="col-md-4">
+    <%= form_tag players_path, :method => 'get' do %>
+      <div class="input-group search_box">
+        <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "search by name" %>
+        <span class="input-group-btn">
+          <%= submit_tag "Search", :name => nil, class: "btn btn-default" %>
+        </span>
+      </div>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
 
-<br>
+<div class="row">
+  <div class="col-md-12">
+    <h3>Ranked Players</h3>
 
-<h3>Unranked Players</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Rating</th>
+          <th>Wins</th>
+          <th>Losses</th>
+          <th></th>
+        </tr>
+      </thead>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Department</th>
-      <th>Wins</th>
-      <th>Losses</th>
-      <th></th>
-    </tr>
-  </thead>
+      <tbody>
+        <% @ranked_players.each do |player| %>
+          <tr>
+            <td><%= @ranked_players.index(player) + 1 %></td>
+            <td><%= player.name %></td>
+            <td><%= player.department %></td>
+            <td><%= player.rating.round %></td>
+            <td><%= player.wins %></td>
+            <td><%= player.losses %></td>
+            <td><%= link_to 'Details', player %></td>
+            <td><%= link_to 'Edit', edit_player_path(player) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
-  <tbody>
-    <% @unranked_players.each do |player| %>
-      <tr>
-        <td><%= player.name %></td>
-        <td><%= player.department %></td>
-        <td><%= player.wins %></td>
-        <td><%= player.losses %></td>
-        <td><%= link_to 'Details', player %></td>
-        <td><%= link_to 'Edit', edit_player_path(player) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <br>
+
+    
+    <h3>Unranked Players</h3>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Wins</th>
+          <th>Losses</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @unranked_players.each do |player| %>
+          <tr>
+            <td><%= player.name %></td>
+            <td><%= player.department %></td>
+            <td><%= player.wins %></td>
+            <td><%= player.losses %></td>
+            <td><%= link_to 'Details', player %></td>
+            <td><%= link_to 'Edit', edit_player_path(player) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

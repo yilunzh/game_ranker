@@ -4,8 +4,13 @@ class PlayersController < ApplicationController
   # GET /players
   # GET /players.json
   def index
-    @ranked_players = Player.where("wins>0 or losses>0").order(rating: :desc) 
-    @unranked_players = Player.where("wins=0 and losses=0")
+    if params[:search]
+      @ranked_players = Player.where("LOWER(name) LIKE ? AND (wins>0 or losses>0)", "%#{params[:search].downcase}%")
+      @unranked_players = Player.where("LOWER(name) LIKE ? AND (wins=0 AND losses=0)", "%#{params[:search].downcase}%")
+    else
+      @ranked_players = Player.where("wins>0 or losses>0").order(rating: :desc) 
+      @unranked_players = Player.where("wins=0 and losses=0")
+    end
   end
 
   # GET /players/1
