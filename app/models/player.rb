@@ -6,15 +6,21 @@ class Player < ActiveRecord::Base
 	validates :email, presence: true, uniqueness: { case_sensitive: false }
 	accepts_nested_attributes_for :scores
 
- def determine_win(game_data)
- 	if game_data[:winners].include?(self.name)
- 		return true
- 	else
- 		return false
+ 	def determine_win(game_data)
+ 		if game_data[:winners].include?(self.name)
+ 			return true
+ 		else
+ 			return false
+ 		end
  	end
- end
 
-
+ 	def self.allNames
+ 		names = []
+ 		Player.all.each do |player|
+ 			names << player.name
+ 		end
+ 		return names
+ 	end
 
 	def send_slack_notification()
 	    HTTP.post("https://hooks.slack.com/services/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", 
