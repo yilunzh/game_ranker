@@ -23,6 +23,5 @@ module GameRanker
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     config.slack_carvana_ping_pong_url = "https://hooks.slack.com/services/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"
-    SLACK_CARVANA_PING_PONG = "hello"
   end
 end

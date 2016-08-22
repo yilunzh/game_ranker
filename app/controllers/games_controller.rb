@@ -18,6 +18,7 @@ class GamesController < ApplicationController
   def new
     gon.player_names = Player.find_all_player_names
     @game = Game.new(game_date: DateTime.now.to_date)
+    
     4.times do
       player = @game.players.build
       4.times { player.scores.build }
