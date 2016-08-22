@@ -35,32 +35,22 @@ class Game < ActiveRecord::Base
     return winning_score
   end
 
-  def winners_losers
-    players = { winners: [], losers: [], winning_score: nil, losing_score: nil}
+  def box_score
+    box_score = { winners: [], losers: [], winning_score: nil, losing_score: nil}
     winner_score = winning_score
 
     self.scores.each do |score|
       player_name = Player.find(score.player_id).name
       if score.score == winner_score
-        players[:winners] << player_name
-        players[:winning_score] = winner_score if players[:winning_score] == nil
+        box_score[:winners] << player_name
+        box_score[:winning_score] = winner_score if box_score[:winning_score] == nil
       else
-        players[:losers] << player_name
-        players[:losing_score] = score.score if players[:losing_score] == nil
+        box_score[:losers] << player_name
+        box_score[:losing_score] = score.score if box_score[:losing_score] == nil
       end
     end
 
-    return players
-  end
-
-  def all_player_names
-    names = []
-
-    self.players.each do |player|
-      names << player.name
-    end
-
-    return names
+    return box_score
   end
 
   def send_slack_notification(winning_team, losing_team)
@@ -70,19 +60,11 @@ class Game < ActiveRecord::Base
     losing_team_score = losing_team[:score]
 
     if losing_team_score == 0
-      HTTP.post("https://hooks.slack.com/services/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", 
+      HTTP.post("#{Rails.application.config.slack_carvana_ping_pong_url}", 
               :json => { text: ":table_tennis_paddle_and_ball: #{winning_team_name} just DOMINATED #{losing_team_name} #{winning_team_score} - #{losing_team_score} :clap: :muscle: :rocket:" })
     else
-      HTTP.post("https://hooks.slack.com/services/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", 
+      HTTP.post("#{Rails.application.config.slack_carvana_ping_pong_url}", 
               :json => { text: ":table_tennis_paddle_and_ball: #{winning_team_name} just won against #{losing_team_name} #{winning_team_score} - #{losing_team_score} :raised_hands:" })
-    end
-  end
-
-  def search(search)
-    if search
-      find(:all, :conditions => ['name LIKE ?', "%#{search}%"])
-    else
-      find(:all)
     end
   end
 end

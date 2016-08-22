@@ -16,7 +16,7 @@ class GamesController < ApplicationController
 
   # GET /games/new
   def new
-    gon.player_names = Player.allNames
+    gon.player_names = Player.find_all_player_names
     @game = Game.new(game_date: DateTime.now.to_date)
     4.times do
       player = @game.players.build

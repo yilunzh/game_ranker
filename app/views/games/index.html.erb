@@ -23,10 +23,10 @@
   <tbody>
     <% @games.each do |game| %>
       <tr>
-        <td><%= game.winners_losers[:winners].join(", ") %></td>
-        <td><%= game.winners_losers[:losers].join(", ") %></td>
-        <td><%= game.winners_losers[:winning_score] %></td>
-        <td><%= game.winners_losers[:losing_score] %></td>
+        <td><%= game.box_score[:winners].join(", ") %></td>
+        <td><%= game.box_score[:losers].join(", ") %></td>
+        <td><%= game.box_score[:winning_score] %></td>
+        <td><%= game.box_score[:losing_score] %></td>
         <td><%= game.game_date %></td>
         <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure? This will remove the game from existence.' } %></td>
       </tr>
