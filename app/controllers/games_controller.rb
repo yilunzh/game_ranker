@@ -29,6 +29,7 @@ class GamesController < ApplicationController
   # POST /games.json
   def create
     @game = Game.new
+
     @game.game_date = params["game"]["game_date"]
     @players = params["game"]["players_attributes"]
     team1 = { members: [], rating: 0, score: nil }
@@ -72,12 +73,12 @@ class GamesController < ApplicationController
     if team1[:score] == winning_score
       winning_team = team1
       losing_team = team2
-      win_percentage = team1[:score] / (team1[:score] + team2[:score])
+      win_percentage = team1[:score].to_f / (team1[:score] + team2[:score])
       rating_change = @game.rating_update(team1[:rating], team2[:rating], win_percentage)
     else
       winning_team = team2
       losing_team = team1
-      win_percentage = team2[:score] / (team1[:score] + team2[:score])
+      win_percentage = team2[:score].to_f / (team1[:score] + team2[:score])
       rating_change = @game.rating_update(team2[:rating], team1[:rating], win_percentage) 
     end
 
@@ -112,7 +113,7 @@ class GamesController < ApplicationController
           s.save
         end
 
-        @game.send_slack_notification(winning_team, losing_team)
+        #@game.send_slack_notification(winning_team, losing_team)
 
         format.html { redirect_to games_path, notice: 'Game was successfully created.' }
         format.json { render :show, status: :created, location: @game }

@@ -21,6 +21,7 @@ class Game < ActiveRecord::Base
     expected_score = 1.0 / (1 + 10 ** ((loser_rating - winner_rating) / 400))
     rating_change = (32 * (1 - expected_score)).abs * (1.0 + (win_percentage-0.5))
     
+    binding.pry
     return rating_change
   end
 
