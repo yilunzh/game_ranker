@@ -35,7 +35,7 @@ class Player < ActiveRecord::Base
 	end
 
   def invite_to_slack
-      token = "xoxp-4040359606-4044760050-70918040001-27cce82029"
+      token = "#"
       email = self.email
       channels = "pingpong"
       HTTP.post("https://slack.com/api/users.admin.invite", 
