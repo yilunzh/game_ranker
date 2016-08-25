@@ -29,10 +29,22 @@ class Player < ActiveRecord::Base
     return game_logs
   end
 
-  def send_slack_notification()
+  def send_slack_notification
 	    HTTP.post("#{Rails.application.config.slack_carvana_ping_pong_url}", 
 	            :json => { text: ":table_tennis_paddle_and_ball: #{self.name} just signed up for Carvana Ping Pong. :+1:" })
 	end
+
+  def invite_to_slack
+      token = "xoxp-4040359606-4044760050-70918040001-27cce82029"
+      email = self.email
+      channels = "pingpong"
+      HTTP.post("https://slack.com/api/users.admin.invite", 
+                :json => {
+                  token: token,
+                  email: email,
+                  channels: channels
+                  })
+  end
 
  	def self.find_all_player_names
  		names = []
