@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Player, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '.game_logs' do
+  	it "returns the games that player played in" do
+  		
+  	end
+  end
 end

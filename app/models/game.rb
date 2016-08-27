@@ -5,27 +5,72 @@ class Game < ActiveRecord::Base
   validates :game_date, presence: true
 	accepts_nested_attributes_for :players
 
-	def update_wins(p1, p2)
-		if self.player1_score > self.player2_score
-      p1.wins += 1
-      p2.losses += 1
-    else
-      p2.wins += 1
-      p1.losses += 1
+  def self.build_game_data(params)
+    players = params["game"]["players_attributes"]
+    team1 = { members: [], rating: 0, score: nil }
+    team2 = { members: [], rating: 0, score: nil }
+    winning_score = 0
+
+    players.each do |key, value|
+      score = value["score"]["score"].to_i
+      name = value["name"]
+
+      #assign winning teams and scores
+      if not name.blank? 
+        if team1[:members].empty? and team2[:members].empty?
+          team1[:members] << name
+          team1[:score] = score
+        else
+          if team1[:score] == score
+            team1[:members] << name
+          else
+            team2[:members] << name
+            team2[:score] = score
+          end
+        end
+
+        if winning_score < score
+          winning_score = score
+        end
+      end
     end
 
-    return p1, p2
-	end
+    #assign rating and find the rating change
+    team1[:members].each do |member|
+      team1[:rating] += Player.find_by_name(member).rating
+    end
 
-  def rating_update(winner_rating, loser_rating, win_percentage)
-    expected_score = 1.0 / (1 + 10 ** ((loser_rating - winner_rating) / 400))
-    rating_change = (32 * (1 - expected_score)).abs * (1.0 + (win_percentage-0.5))
-    
-    binding.pry
+    team2[:members].each do |member|
+      team2[:rating] += Player.find_by_name(member).rating
+    end
+
+    return team1, team2, winning_score
+  end
+
+  def update_rating(team1, team2, winning_score)
+    if team1[:score] == winning_score
+      winning_team = team1
+      losing_team = team2
+      win_percentage = team1[:score].to_f / (team1[:score] + team2[:score])
+      rating_change = self.calc_rating_change(team1[:rating], team2[:rating], win_percentage)
+    else
+      winning_team = team2
+      losing_team = team1
+      win_percentage = team2[:score].to_f / (team1[:score] + team2[:score])
+      rating_change = self.calc_rating_change(team2[:rating], team1[:rating], win_percentage) 
+    end
+
     return rating_change
   end
 
-  def winning_score
+  def calc_rating_change(winner_rating, loser_rating, win_percentage)
+    expected_score = 1.0 / (1 + 10 ** ((loser_rating - winner_rating) / 400))
+    rating_change = (32 * (1 - expected_score)).abs * (1.0 + (win_percentage-0.5))
+    
+    return rating_change
+  end
+
+  def find_winning_score
     winning_score = 0
     self.scores.each do |score|
       if score.score > winning_score
@@ -38,7 +83,7 @@ class Game < ActiveRecord::Base
 
   def box_score
     box_score = { winners: [], losers: [], winning_score: nil, losing_score: nil}
-    winner_score = winning_score
+    winner_score = find_winning_score
 
     self.scores.each do |score|
       player_name = Player.find(score.player_id).name

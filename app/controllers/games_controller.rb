@@ -29,62 +29,15 @@ class GamesController < ApplicationController
   # POST /games.json
   def create
     @game = Game.new
-
     @game.game_date = params["game"]["game_date"]
     @players = params["game"]["players_attributes"]
-    team1 = { members: [], rating: 0, score: nil }
-    team2 = { members: [], rating: 0, score: nil }
-    winning_score = 0
-
-    @players.each do |key, value|
-      score = value["score"]["score"].to_i
-      name = value["name"]
-
-      #assign winning teams and scores
-      if not name.blank? 
-        if team1[:members].empty? and team2[:members].empty?
-          team1[:members] << name
-          team1[:score] = score
-        else
-          if team1[:score] == score
-            team1[:members] << name
-          else
-            team2[:members] << name
-            team2[:score] = score
-          end
-        end
-
-        if winning_score < score
-          winning_score = score
-        end
-      end
-    end
-
-    #assign rating and find the rating change
-    team1[:members].each do |member|
-      team1[:rating] += Player.find_by_name(member).rating
-    end
-
-    team2[:members].each do |member|
-      team2[:rating] += Player.find_by_name(member).rating
-    end
+    team1, team2, winning_score = Game.build_game_data(params)
 
     #find winning and losing team and calculate rating change accordingly
-    if team1[:score] == winning_score
-      winning_team = team1
-      losing_team = team2
-      win_percentage = team1[:score].to_f / (team1[:score] + team2[:score])
-      rating_change = @game.rating_update(team1[:rating], team2[:rating], win_percentage)
-    else
-      winning_team = team2
-      losing_team = team1
-      win_percentage = team2[:score].to_f / (team1[:score] + team2[:score])
-      rating_change = @game.rating_update(team2[:rating], team1[:rating], win_percentage) 
-    end
-
+    rating_change = @game.update_rating(team1, team2, winning_score)
     @game.rating_change = rating_change
 
-    #calculate wins, losses, and ratings
+    #calculate player wins, losses, and ratings
     @players.each do |key, value|
       if value["name"] != ''
         p = Player.find_by_name(value["name"])
@@ -113,7 +66,7 @@ class GamesController < ApplicationController
           s.save
         end
 
-        @game.send_slack_notification(winning_team, losing_team)
+        #@game.send_slack_notification(winning_team, losing_team)
 
         format.html { redirect_to games_path, notice: 'Game was successfully created.' }
         format.json { render :show, status: :created, location: @game }
@@ -134,12 +87,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     
     #find winning score
-    winning_score = 0
-    @game.scores.each do |score|
-      if score.score > winning_score
-        winning_score = score.score
-      end
-    end
+    winning_score = @game.find_winning_score
 
     #reverting score and ratings
     @game.scores.each do |score|
