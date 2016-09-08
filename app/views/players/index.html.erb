@@ -31,8 +31,7 @@
           <th>Name</th>
           <th>Department</th>
           <th>Rating</th>
-          <th>Wins</th>
-          <th>Losses</th>
+          <th>W - L</th>
           <th></th>
         </tr>
       </thead>
@@ -44,8 +43,7 @@
             <td><%= player.name %></td>
             <td><%= player.department %></td>
             <td><%= player.rating.round %></td>
-            <td><%= player.wins %></td>
-            <td><%= player.losses %></td>
+            <td><%= "#{player.wins} - #{player.losses}" %></td>
             <td><%= link_to 'Details', player %></td>
             <td><%= link_to 'Edit', edit_player_path(player) %></td>
           </tr>

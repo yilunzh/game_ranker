@@ -1,0 +1,39 @@
+<h1>Dashboard</h1>
+
+<div class="row">
+	<div class="col-md-12">
+		<h3>Top players at Carvana</h3>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Rating</th>
+          <th>W - L</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @top_players.each do |player| %>
+          <tr>
+            <td><%= @top_players.index(player) + 1 %></td>
+            <td><%= player.name %></td>
+            <td><%= player.department %></td>
+            <td><%= player.rating.round %></td>
+            <td><%= "#{player.wins} - #{player.losses}" %></td>
+            <td><%= link_to 'Details', player %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <%= link_to "See more", players_path %>
+
+	</div>
+</div>
+
+<div class="row">
+</div>

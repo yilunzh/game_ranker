@@ -99,7 +99,15 @@ class Game < ActiveRecord::Base
     return box_score
   end
 
-  def send_slack_notification(winning_team, losing_team)
+  def send_slack_notification(team1, team2, winning_score)
+    if team1[:score] == winning_score
+      winning_team = team1
+      losing_team = team2
+    else
+      winning_team = team2
+      losing_team = team1
+    end
+
     winning_team_name = winning_team[:members].join('/')
     winning_team_score = winning_team[:score]
     losing_team_name = losing_team[:members].join('/')

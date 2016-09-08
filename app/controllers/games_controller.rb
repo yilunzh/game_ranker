@@ -66,7 +66,7 @@ class GamesController < ApplicationController
           s.save
         end
 
-        #@game.send_slack_notification(winning_team, losing_team)
+        #@game.send_slack_notification(team1, team2, winning_score)
 
         format.html { redirect_to games_path, notice: 'Game was successfully created.' }
         format.json { render :show, status: :created, location: @game }

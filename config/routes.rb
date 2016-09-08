@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'players#index'
   get 'faq', to: 'static_pages#faq', as: :faq
+  get 'home', to: 'static_pages#home', as: :home
 
   resources :games, except: [:edit, :update]
   resources :players
