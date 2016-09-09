@@ -36,14 +36,15 @@
 </div>
 
 <div class="row">
-	<h3>Pulse around the office</h3>
 	<div class="col-md-6">
 		<h4>Longest Current Win Streak</h4>
-		<%= "#{@player_longest_winning_streak.name}: #{@player_longest_winning_streak.winning_streak}" %>
+			<div class="circle"><%= @player_longest_winning_streak.winning_streak %></div>
+			<p><%= "#{@player_longest_winning_streak.name}" %></p>
 	</div>
 
 	<div class="col-md-6">
 		<h4>Longest Current Losing Streak</h4>
-		<%= "#{@player_longest_losing_streak.name}: #{@player_longest_losing_streak.losing_streak}" %>
+		<div class="circle lose"><%= @player_longest_losing_streak.losing_streak %></div>
+		<%= "#{@player_longest_losing_streak.name}" %>
 	</div>
 </div>

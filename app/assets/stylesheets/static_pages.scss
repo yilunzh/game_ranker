@@ -16,3 +16,19 @@
     width:100%;
     position:absolute;
 }
+
+.circle
+{
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    font-size:50px;
+    color:#fff;
+    line-height:100px;
+    text-align:center;
+    background:#009933;
+}
+
+.lose {
+    background:red;
+}
