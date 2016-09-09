@@ -49,9 +49,14 @@ class GamesController < ApplicationController
         if score == winning_score
           p.wins += 1
           p.rating += rating_change
+          binding.pry
+          p.winning_streak += 1
+          p.losing_streak = 0
         else
           p.losses += 1
           p.rating -= rating_change
+          p.losing_streak += 1
+          p.winning_streak = 0
         end
       end
     end

@@ -30,6 +30,8 @@ class PlayersController < ApplicationController
     @player.rating = 1500
     @player.wins = 0
     @player.losses = 0
+    @player.winning_streak = 0
+    @player.losing_streak = 0
 
     respond_to do |format|
       if @player.save

@@ -31,6 +31,20 @@
   <%= @player.losses %>
 </p>
 
+<% if @player.winning_streak > 0 %>
+  <p>
+    <strong>Current Winning Streak:</strong>
+    <%= @player.winning_streak %>
+  </p>
+<% end %>
+
+<% if @player.losing_streak > 0 %>
+  <p>
+    <strong>Current Losing Streak:</strong>
+    <%= @player.losing_streak %>
+  </p>
+<% end %>
+
 <table class="table">
   <thead>
     <tr>

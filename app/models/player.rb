@@ -66,6 +66,9 @@ class Player < ActiveRecord::Base
     return ranked_players, unranked_players
   end
 
+  def self.longest_win_streak
+  end
+
 	private
 
 		def is_win?(game_data)
