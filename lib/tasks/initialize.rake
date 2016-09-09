@@ -3,7 +3,6 @@ namespace :initialize do
   task streak: :environment do
   	Player.all.each do |player|
   		if player.winning_streak == nil
-  			
 	  		player.winning_streak = 0
 	  	end
 
