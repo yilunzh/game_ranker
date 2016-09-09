@@ -66,7 +66,12 @@ class Player < ActiveRecord::Base
     return ranked_players, unranked_players
   end
 
-  def self.longest_win_streak
+  def self.longest_winning_streak
+    return self.all.max_by(&:winning_streak)
+  end
+
+  def self.longest_losing_streak
+    return self.all.max_by(&:losing_streak)
   end
 
 	private
