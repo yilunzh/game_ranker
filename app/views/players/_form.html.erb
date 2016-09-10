@@ -19,6 +19,12 @@
     <%= f.label :email %><br>
     <%= f.text_field :email, class: "form-control" %>
   </div>
+
+  <div class="field form-group">
+    <%= f.label :avatar %><br>
+    <%= f.file_field :avatar,  lass: "form-control"%>
+  </div>
+
   <div class="actions">
     <%= f.submit class: "btn btn-primary" %>
   </div>

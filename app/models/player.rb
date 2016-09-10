@@ -3,6 +3,9 @@ class Player < ActiveRecord::Base
 	has_many :games, through: :game_players
 	has_many :scores
 
+  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100#" }, :default_url => "/images/:style/missing.png"
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+
 	validates :email, presence: true, uniqueness: { case_sensitive: false }
 	accepts_nested_attributes_for :scores
 
