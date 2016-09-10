@@ -37,12 +37,10 @@
 
 <br>
 
-<div class="row">
-	<div class="col-md-2">
-    <div class="round-image-100"><%= image_tag(@player_longest_winning_streak.avatar.url(:medium)) %></div>
-	</div>
-  <div class="col-md-10">
-    <h4 class="media-heading">Current Longest Winning Streak</h4>
-    <p><%= "#{@player_longest_winning_streak.name} - #{@player_longest_winning_streak.winning_streak} consecutive wins" %></p>
-  </div>
+<div id="stats-parent">
+    <div class="round-image-100" id="avatar"><%= image_tag(@player_longest_winning_streak.avatar.url(:medium)) %></div>
+    <div id="stats-body">
+      <h4>Current Longest Winning Streak</h4>
+      <p><%= "#{@player_longest_winning_streak.name} - #{@player_longest_winning_streak.winning_streak} consecutive wins" %></p>
+    </div>
 </div>
