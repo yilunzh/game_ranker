@@ -31,16 +31,19 @@ class GamesController < ApplicationController
     @game = Game.new
     @game.game_date = params["game"]["game_date"]
     @players = params["game"]["players_attributes"]
+    player_count = 0
+
     team1, team2, winning_score = Game.build_game_data(params)
 
     #find winning and losing team and calculate rating change accordingly
     rating_change = @game.update_rating(team1, team2, winning_score)
     @game.rating_change = rating_change
 
-    #calculate player wins, losses, and ratings
+    #calculate player wins, losses, ratings
     @players.each do |key, value|
       if value["name"] != ''
         p = Player.find_by_name(value["name"])
+        player_count += 1
         @game.players << p
         score = value["score"]["score"].to_i
         score_params = Score.new({id: nil, game_id: @game.id, player_id: p.id, score: score})
@@ -49,15 +52,46 @@ class GamesController < ApplicationController
         if score == winning_score
           p.wins += 1
           p.rating += rating_change
-          binding.pry
           p.winning_streak += 1
           p.losing_streak = 0
+          # if is_championship_belt_game
+          #   if p.has_championship_belt == false
+          #     p.has_championship_belt = true
+          #   end
+          # end
         else
           p.losses += 1
           p.rating -= rating_change
           p.losing_streak += 1
           p.winning_streak = 0
+          # if is_championship_belt_game
+          #   if p.has_championship_belt
+          #     p.has_championship_belt = false
+          #   end
+          # end
         end
+      end
+    end
+
+    #determine if it's a championship belt game
+    if player_count == 2
+      is_championship_belt_game = @game.is_championship_belt_game
+    else
+      is_championship_belt_game = false
+    end
+
+    if is_championship_belt_game
+      winning_player_ids = @game.find_winning_player_ids
+
+      @game.players.each do |p|
+        #has belt and lost
+        if (p.has_championship_belt) && (not winning_player_ids.include? p.id)
+          p.has_championship_belt = false
+        end
+        #doesn't have belt and won
+        if (p.has_championship_belt == false) && (winning_player_ids.include? p.id)
+          p.has_championship_belt = true
+        end 
       end
     end
 
@@ -71,7 +105,7 @@ class GamesController < ApplicationController
           s.save
         end
 
-        @game.send_slack_notification(team1, team2, winning_score)
+        #@game.send_slack_notification(team1, team2, winning_score)
 
         format.html { redirect_to games_path, notice: 'Game was successfully created.' }
         format.json { render :show, status: :created, location: @game }

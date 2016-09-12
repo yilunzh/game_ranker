@@ -14,6 +14,16 @@ namespace :initialize do
   	end
   end
 
+  task championship_belt: :environment do
+    Player.all.each do |player|
+      if player.has_championship_belt == nil
+        player.has_championship_belt = false
+      end
+      
+      player.save
+    end
+  end
+
   task calculate_streak: :environment do
     Player.all.each do |p|
       winning_streak = 0

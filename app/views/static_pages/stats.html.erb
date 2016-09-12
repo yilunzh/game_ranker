@@ -37,6 +37,18 @@
 
 <br>
 
+<h3>Highlights</h3>
+
+<div id="stats-parent">
+    <div class="round-image-100" id="avatar"><%= image_tag(@player_has_championship_belt.avatar.url(:medium)) %></div>
+    <div id="stats-body">
+      <h4>Current Championship Belt Holder</h4>
+      <p><%= "#{@player_has_championship_belt.name}" %></p>
+    </div>
+</div>
+
+<br>
+
 <div id="stats-parent">
     <div class="round-image-100" id="avatar"><%= image_tag(@player_longest_winning_streak.avatar.url(:medium)) %></div>
     <div id="stats-body">
@@ -44,3 +56,4 @@
       <p><%= "#{@player_longest_winning_streak.name} - #{@player_longest_winning_streak.winning_streak} consecutive wins" %></p>
     </div>
 </div>
+

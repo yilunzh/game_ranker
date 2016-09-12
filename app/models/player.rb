@@ -77,6 +77,14 @@ class Player < ActiveRecord::Base
     return self.all.max_by(&:losing_streak)
   end
 
+  def self.has_championship_belt
+    return self.where("has_championship_belt = true")[0]
+  end
+
+  def title_defense
+    return self.games()
+  end
+
 	private
 
 		def is_win?(game_data)

@@ -81,6 +81,18 @@ class Game < ActiveRecord::Base
     return winning_score
   end
 
+  def find_winning_player_ids
+    winning_player_ids = []
+    winning_score = self.find_winning_score
+    self.scores.each do |score|
+      if score.score == winning_score
+        winning_player_ids << score.player_id
+      end
+    end
+
+    return winning_player_ids
+  end
+
   def box_score
     box_score = { winners: [], losers: [], winning_score: nil, losing_score: nil}
     winner_score = find_winning_score
@@ -97,6 +109,10 @@ class Game < ActiveRecord::Base
     end
 
     return box_score
+  end
+
+  def is_championship_belt_game
+    return self.players.any? {|p| p[:has_championship_belt] == true }
   end
 
   def send_slack_notification(team1, team2, winning_score)
