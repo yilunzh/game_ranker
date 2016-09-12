@@ -54,21 +54,11 @@ class GamesController < ApplicationController
           p.rating += rating_change
           p.winning_streak += 1
           p.losing_streak = 0
-          # if is_championship_belt_game
-          #   if p.has_championship_belt == false
-          #     p.has_championship_belt = true
-          #   end
-          # end
         else
           p.losses += 1
           p.rating -= rating_change
           p.losing_streak += 1
           p.winning_streak = 0
-          # if is_championship_belt_game
-          #   if p.has_championship_belt
-          #     p.has_championship_belt = false
-          #   end
-          # end
         end
       end
     end
@@ -80,6 +70,7 @@ class GamesController < ApplicationController
       is_championship_belt_game = false
     end
 
+    #determine who has the new championship belt
     if is_championship_belt_game
       winning_player_ids = @game.find_winning_player_ids
 
@@ -105,7 +96,7 @@ class GamesController < ApplicationController
           s.save
         end
 
-        #@game.send_slack_notification(team1, team2, winning_score)
+        @game.send_slack_notification(team1, team2, winning_score)
 
         format.html { redirect_to games_path, notice: 'Game was successfully created.' }
         format.json { render :show, status: :created, location: @game }
