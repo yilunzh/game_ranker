@@ -43,7 +43,10 @@
     <div class="round-image-100" id="avatar"><%= image_tag(@player_has_championship_belt.avatar.url(:medium)) %></div>
     <div id="stats-body">
       <h4>Current Championship Belt Holder</h4>
-      <p><%= "#{@player_has_championship_belt.name}" %></p>
+      <p>
+        <%= "#{@player_has_championship_belt.name}" %>
+        <%= image_tag('championship_belt.png', id: "championship_belt") %>
+      </p>
     </div>
 </div>
 
