@@ -40,7 +40,7 @@
         <% @ranked_players.each do |player| %>
           <tr>
             <td><%= @ranked_players.index(player) + 1 %></td>
-            <td><%= player.name %>
+            <td><%= player.name %>  
                 <% if player.has_championship_belt %>
                   <%= image_tag('championship_belt.png', id: "championship_belt") %>
                 <% end %>

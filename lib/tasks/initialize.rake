@@ -1,4 +1,4 @@
-namespace :initialize do
+heroknamespace :initialize do
   desc "TODO"
   task streak: :environment do
   	Player.all.each do |player|
