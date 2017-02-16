@@ -2,7 +2,9 @@ class Game < ActiveRecord::Base
 	has_many :game_players
 	has_many :players, through: :game_players
 	has_many :scores, dependent: :destroy
+
   validates :game_date, presence: true
+
 	accepts_nested_attributes_for :players
 
   def self.build_game_data(params)
